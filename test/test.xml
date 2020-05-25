@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<root>
+  <!--*****************************************************************************************************-->
+  <!--************************************ log4j configuration section ************************************-->
+  <!--*****************************************************************************************************-->
+  <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- Default file for logs -->
+    <appender name="fileDefault" class="org.apache.log4j.FileAppender">
+      <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="%d{dd MM yyyy HH:mm:ss,SSS} %-4r [%t] %-5p %c{2} %x - %m%n"/>
+      </layout>
+      <param name="File" value="logs/default.log"/>
+      <param name="Encoding" value="UTF-8"/>
+      <param name="ImmediateFlush" value="true"/>
+    </appender>
+    <!-- Logging outgoing HTTP requests into separated file -->
+    <appender name="outgoingRequestLog" class="org.apache.log4j.FileAppender">
+      <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="%d{dd MM yyyy HH:mm:ss,SSS} %-4r [%t] %-5p %c{2} %x - %m%n"/>
+      </layout>
+      <param name="File" value="logs/outgoingRequests.log"/>
+      <param name="Encoding" value="UTF-8"/>
+      <param name="ImmediateFlush" value="true"/>
+    </appender>
+    <!-- Logging incoming HTTP requests into separated file -->
+    <appender name="incomingRequestLog" class="org.apache.log4j.FileAppender">
+      <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="%d{dd MM yyyy HH:mm:ss,SSS} %-4r [%t] %-5p %c{2} %x - %m%n"/>
+      </layout>
+      <param name="File" value="logs/incomingRequests.log"/>
+      <param name="Encoding" value="UTF-8"/>
+      <param name="ImmediateFlush" value="true"/>
+    </appender>
+    <!--
+    <appender name="incomingRequestLog" class="org.apache.log4j.jdbc.JDBCAppender"><param name="URL" value="jdbc:odbc:sample"/><param name="User" value="UG_SBB"/><param name="Password" value="sample"/><layout class="org.apache.log4j.PatternLayout"><param name="ConversionPattern" value="INSERT INTO JDBCTEST VALUES ('%d{dd MM yyyy HH:mm:ss,SSS}','%-4r','[%t]','%-5p','%c{2}','%x','%m%n')"/></layout></appender>
+    --><!-- Default logging -->
+    <root>
+      <priority value="debug"/>
+      <appender-ref ref="fileDefault"/>
+    </root>
+    <!-- UG Core logging: startup and shutdown, loaded workflows, config file loading or reloading -->
+    <logger name="com.scorex.osgi.oug.ougcore">
+      <level value="debug"/>
+    </logger>
+    <!-- UG Groovy logging: loading or reloading -->
+    <logger name="com.scorex.osgi.oug.components.ouggroovy">
+      <level value="debug"/>
+    </logger>
+    <!-- logging outgoing HTTP requests into separated file -->
+    <logger name="com.scorex.osgi.oug.components.oughttpcomponent" additivity="false">
+      <level value="debug"/>
+      <appender-ref ref="outgoingRequestLog"/>
+    </logger>
+    <!-- logging incoming HTTP requests into separated file -->
+    <logger name="com.scorex.osgi.oug.war.basic.UGServlet" additivity="false">
+      <level value="debug"/>
+      <appender-ref ref="incomingRequestLog"/>
+    </logger>
+    <!-- UG trshookconnector -->
+    <logger name="com.scorex.osgi.oug.components.trshookconnector">
+      <level value="info"/>
+    </logger>
+  </log4j:configuration>
+</root>

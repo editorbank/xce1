@@ -1,0 +1,50 @@
+; Ёта строка коментарий
+; ¬ключени режима отладки
+-D+
+-DNN+
+; ¬кючение отображени€ атрибутов при отладке, иначе только имена узлов
+;-DA+
+
+; «агрузка файла config.xml
+-FL test.xml
+
+; ¬ывести результат XPath выражени€
+; -DN
+; //*
+
+; находим узел(Node) appender c атрибутом name равном TEST_APPENDER
+;если его нет (!Node), выполн€ем блок до оператора -FI
+-$= //appender[@name="TEST_APPENDER"]
+-N: $
+-IF !N
+  ;переходим на родительский узел последнего узла workflow
+  -N: "//appender[last()]/.."
+  ;добавл€ем дочерний узел appender, обычно добавл€етс€ последним в списке если их несколько.
+  -NAC "appender"
+  ;определ€ем текщим атрибут name
+  -A: 'name'
+  ;присваем ему значение
+  -A= "TEST_APPENDER"
+  ;определ€ем текщим атрибут class
+  -A: 'class'
+  -A= "org.apache.log4j.FileAppender"
+  ;добавим дочерний узел param
+  -NAC "param"
+  ;добавим текстовый атрибут
+  -T= "TEXT TEXT TEXT TEXT"
+  ;добавим атрибут name
+  -A: 'name'
+  -A= 'File'
+  ;добавим атрибут value
+  -A: 'value'
+  -A= 'logs/default.log'
+  -N: $
+-FI
+ 
+;-PRESERVE_WHITE_SPACE-
+-NORMALIZE
+
+; «апись загруженного XML в файл с другим именем
+-FSA ..\target\test2-append.xml
+
+;  онец
